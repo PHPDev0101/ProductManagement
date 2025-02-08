@@ -2,41 +2,97 @@
 
 namespace App\Services;
 
+use App\Exceptions\DatabaseException;
 use App\Models\Product;
 use App\Repositories\ProductRepository;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Log;
 
 class ProductService
 {
-    protected $productRepository;
+    protected ProductRepository $productRepository;
 
     public function __construct(ProductRepository $productRepository)
     {
         $this->productRepository = $productRepository;
     }
 
+    /**
+     * @throws DatabaseException
+     */
     public function getAllProducts(): Collection
     {
-        return $this->productRepository->getAll();
+        try {
+            $products = $this->productRepository->getAll();
+
+            if ($products->isEmpty()) {
+                Log::info('No products found.');
+                throw new ModelNotFoundException('No products available at the moment.');
+            }
+
+            return $products;
+        } catch (DatabaseException $e) {
+            throw new DatabaseException($e->getMessage());
+        }
     }
 
+    /**
+     * @throws DatabaseException
+     */
     public function getProductById(int $id): Product
     {
-        return $this->productRepository->findById($id);
+        try {
+            $product = $this->productRepository->findById($id);
+
+            if (!$product) {
+                Log::info('Product with ID: ' . $id . ' not found.');
+                throw new ModelNotFoundException('Product not found');
+            }
+
+            return $product;
+        } catch (DatabaseException $e) {
+            throw new DatabaseException($e->getMessage());
+        }
     }
 
+    /**
+     * @throws DatabaseException
+     */
     public function createProduct(array $data): Product
     {
-        return $this->productRepository->create($data);
+        try {
+            return $this->productRepository->create($data);
+        } catch (DatabaseException $e) {
+            throw new DatabaseException($e->getMessage());
+        }
     }
 
+    /**
+     * @throws DatabaseException
+     */
     public function updateProduct(int $id, array $data): Product
     {
-        return $this->productRepository->update($id,$data);
+        try {
+            return $this->productRepository->update($id, $data);
+        } catch (ModelNotFoundException $e) {
+            throw new ModelNotFoundException($e->getMessage());
+        } catch (DatabaseException $e) {
+            throw new DatabaseException($e->getMessage());
+        }
     }
 
+    /**
+     * @throws DatabaseException
+     */
     public function deleteProduct(int $id): bool
     {
-        return $this->productRepository->delete($id);
+        try {
+            return $this->productRepository->delete($id);
+        } catch (ModelNotFoundException $e) {
+            throw new ModelNotFoundException($e->getMessage());
+        } catch (DatabaseException $e) {
+            throw new DatabaseException($e->getMessage());
+        }
     }
 }

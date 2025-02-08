@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product API Interface</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+            text-align: center;
+        }
+        input, button {
+            margin: 5px;
+            padding: 10px;
+            width: 90%;
+        }
+        .output {
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Product API Interface</h2>
+
+    <!-- Get All Products -->
+    <button onclick="getAllProducts()">Get All Products</button>
+    
+    <!-- Get Product by ID -->
+    <input type="number" id="getProductId" placeholder="Enter Product ID">
+    <button onclick="getProductById()">Get Product by ID</button>
+    
+    <!-- Create Product -->
+    <input type="text" id="createName" placeholder="Product Name">
+    <input type="text" id="createDescription" placeholder="Product Description">
+    <input type="number" id="createPrice" placeholder="Product Price">
+    <button onclick="createProduct()">Create Product</button>
+
+    <!-- Update Product -->
+    <input type="number" id="updateId" placeholder="Product ID">
+    <input type="text" id="updateName" placeholder="New Name (optional)">
+    <input type="text" id="updateDescription" placeholder="New Description (optional)">
+    <input type="number" id="updatePrice" placeholder="New Price (optional)">
+    <button onclick="updateProduct()">Update Product</button>
+
+    <!-- Delete Product -->
+    <input type="number" id="deleteId" placeholder="Product ID">
+    <button onclick="deleteProduct()">Delete Product</button>
+
+    <!-- Output -->
+    <div class="output" id="output">API Response will appear here...</div>
+
+    <script>
+        const API_URL = "http://localhost:8000/api/products"; // Adjust if needed
+
+        async function getAllProducts() {
+            const response = await fetch(API_URL);
+            const data = await response.json();
+            document.getElementById('output').innerText = JSON.stringify(data, null, 2);
+        }
+
+        async function getProductById() {
+            const id = document.getElementById("getProductId").value;
+            if (!id) return alert("Enter Product ID");
+
+            const response = await fetch(`${API_URL}/${id}`);
+            const data = await response.json();
+            document.getElementById('output').innerText = JSON.stringify(data, null, 2);
+        }
+
+        async function createProduct() {
+            const name = document.getElementById("createName").value;
+            const description = document.getElementById("createDescription").value;
+            const price = document.getElementById("createPrice").value;
+
+            if (!name || !description || !price) return alert("Fill all fields");
+
+            const response = await fetch(API_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, description, price })
+            });
+
+            const data = await response.json();
+            document.getElementById('output').innerText = JSON.stringify(data, null, 2);
+        }
+
+        async function updateProduct() {
+            const id = document.getElementById("updateId").value;
+            const name = document.getElementById("updateName").value;
+            const description = document.getElementById("updateDescription").value;
+            const price = document.getElementById("updatePrice").value;
+
+            if (!id) return alert("Enter Product ID");
+
+            const body = {};
+            if (name) body.name = name;
+            if (description) body.description = description;
+            if (price) body.price = price;
+
+            const response = await fetch(`${API_URL}/${id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body)
+            });
+
+            const data = await response.json();
+            document.getElementById('output').innerText = JSON.stringify(data, null, 2);
+        }
+
+        async function deleteProduct() {
+            const id = document.getElementById("deleteId").value;
+            if (!id) return alert("Enter Product ID");
+
+            const response = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+            const data = await response.json();
+            document.getElementById('output').innerText = JSON.stringify(data, null, 2);
+        }
+    </script>
+
+</body>
+</html>
+
