@@ -5,8 +5,8 @@ namespace App\Services;
 use App\Exceptions\DatabaseException;
 use App\Models\Product;
 use App\Repositories\ProductRepository;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
 
 class ProductService
@@ -21,17 +21,10 @@ class ProductService
     /**
      * @throws DatabaseException
      */
-    public function getAllProducts(): Collection
+    public function getAllProducts(): LengthAwarePaginator
     {
         try {
-            $products = $this->productRepository->getAll();
-
-            if ($products->isEmpty()) {
-                Log::info('No products found.');
-                throw new ModelNotFoundException('No products available at the moment.');
-            }
-
-            return $products;
+            return $this->productRepository->getAll();
         } catch (DatabaseException $e) {
             throw new DatabaseException($e->getMessage());
         }

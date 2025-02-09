@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Product</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>View Product</h1>
+        <form id="view-product-form">
+            <label for="name">Product Name</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="description">Description</label>
+            <textarea id="description" name="description" required></textarea>
+
+            <label for="price">Price</label>
+            <input type="number" id="price" name="price" step="0.01" required>
+
+            <div class="button-container">
+                <button type="submit" id="update-button">Update Product</button>
+                <button type="button" id="delete-button">Delete Product</button>
+            </div>
+
+            <div class="back-button-container">
+                <a href="product-list.html" class="button-link">Back to List</a>
+                <a href="index.html" class="button-link">Back to Main</a>
+            </div>
+        </form>
+    </div>
+    <script src="js/view-product.js"></script>
+</body>
+</html>

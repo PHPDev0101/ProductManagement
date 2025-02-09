@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="top-buttons">
+            <a href="create.html" class="btn">Create New Product</a>
+            <a href="index.html" class="btn">Back to Main</a>
+        </div>
+        <h1>Product List</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="productTableBody">
+                <!-- Products will be loaded here -->
+            </tbody>
+        </table>
+        <div class="pagination" id="paginationControls">
+            <!-- Pagination buttons will be inserted here -->
+        </div>
+    </div>
+    <script src="js/product-list.js"></script>
+</body>
+</html>

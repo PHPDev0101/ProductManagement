@@ -4,26 +4,27 @@ namespace App\Repositories;
 
 use App\Exceptions\DatabaseException;
 use App\Models\Product;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
 use PDOException;
 
 class ProductRepository
 {
     /**
-     * @return Collection
+     * @return LengthAwarePaginator
      *
      * @throws DatabaseException
      */
-    public function getAll(): Collection
+    public function getAll(): LengthAwarePaginator
     {
         try {
-            return Product::all();
+            return Product::paginate($per_page = 10);
         } catch (QueryException | PDOException $e) {
             Log::error('Error retrieving all products: ' . $e->getMessage());
             throw new DatabaseException('Currently service unavailable, please try again later', 500);
+            abort(500, 'Currently service unavailable');
         }
     }
 
@@ -76,9 +77,6 @@ class ProductRepository
             $product->update($data);
 
             return $product;
-        } catch (ModelNotFoundException $e) {
-            Log::info('Product with ID: ' . $id . ' not found');
-            throw new ModelNotFoundException('Product not found');
         } catch (QueryException | PDOException $e) {
             Log::error('Error updating product: ' . $e->getMessage());
             throw new DatabaseException('Currently, the service is unavailable. Please try again later.');

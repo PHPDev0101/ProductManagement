@@ -1,0 +1,150 @@
+form {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    margin: auto;
+    align-items: center;
+}
+
+label, input, textarea, button, .button-link {
+    margin-bottom: 10px;
+    width: 100%;
+    max-width: 300px;
+}
+
+input, textarea, button, .button-link {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+textarea {
+    height: 200px;
+    resize: vertical;
+}
+
+.button-container {
+    display: flex;
+	justify-content: space-between;
+    width: 100%;
+    max-width: 300px;
+	margin-top: 10px;
+}
+
+.button-container button, .button-link {
+    width: 48%;
+}
+
+.button-container a {
+    display: block;
+    text-align: center;
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+.button-link, button {
+    display: block;
+    text-align: center;
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+button {
+    border: none;
+    cursor: pointer;
+}
+
+.btn-delete {
+	max-width: 100px;
+}
+
+a.button-link, .btn-delete {
+	align-items: center;
+    width: 300px;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #f4f4f4;
+}
+
+.btn, .btn-delete {
+    padding: 8px 12px;
+    text-decoration: none;
+    color: white;
+    background-color: #007BFF;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.btn:hover, .button-link:hover, button:hover {
+    background-color: #0056b3;
+}
+
+
+.top-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.pagination button {
+    margin: 5px;
+    padding: 8px 12px;
+    border: none;
+    background-color: #007BFF;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.pagination button:hover {
+    background-color: #0056b3;
+}
+
+.pagination button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}

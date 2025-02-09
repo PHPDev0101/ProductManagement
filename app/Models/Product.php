@@ -9,6 +9,13 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'price'];
+    /**
+     * @var array<string> $fillable
+     */
+    protected $fillable = [
+        'name',
+        'description',
+        'price',
+    ];
     public $timestamps = false;
 }
