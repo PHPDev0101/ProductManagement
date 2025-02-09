@@ -27,8 +27,8 @@ Ensure you have the following installed:
 ### Backend Setup
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-repository.git
-   cd your-repository
+   git clone https://github.com/PHPDev0101/ProductManagement.git
+   cd ProductManagement
    ```
 2. Install dependencies:
    ```bash
@@ -62,7 +62,7 @@ Ensure you have the following installed:
 
 ### Frontend Setup
 1. Ensure your API is running (`php artisan serve`)
-2. Open `index.html` in a browser to start interacting with the application
+2. Open `index.html` in a browser to start interacting with the application or *http://127.0.0.1:8000/index.html*  
 
 ## API Routes
 
@@ -95,9 +95,3 @@ Example payload:
   "price": 99.99
 }
 ```
-
-## Features
-- **Pagination:** The product listing supports pagination.
-- **Validation:** Server-side validation is implemented.
-- **Service & Repository Pattern:** Clean code structure with services and repositories.
-
