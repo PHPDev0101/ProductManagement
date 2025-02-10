@@ -3,7 +3,7 @@ const createProductForm = document.getElementById('create-product-form');
 
 // Listen for form submission
 createProductForm.addEventListener('submit', async function(event) {
-    event.preventDefault(); // Prevent the form from submitting the traditional way
+    event.preventDefault();
 
     // Collect form data
     const productData = {
@@ -14,7 +14,7 @@ createProductForm.addEventListener('submit', async function(event) {
 
     // Call the API to create the product
     try {
-        const response = await fetch('http://127.0.0.1:8000/api/products', { // Replace with your API URL
+        const response = await fetch('http://127.0.0.1:8000/api/products', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ createProductForm.addEventListener('submit', async function(event) {
         if (response.ok) {
             console.log('Product created successfully:', result);
             alert('Product created successfully!');
-            window.location.href = 'product-list.html'; // Redirect to the product list page
+            window.location.href = 'product-list.html';
         } else {
             console.error('Error creating product:', result);
             alert('Failed to create product. Please try again.');

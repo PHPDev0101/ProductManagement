@@ -73,7 +73,9 @@ button {
 
 a.button-link, .btn-delete {
 	align-items: center;
-    width: 300px;
+    margin-right: 10px;
+    margin-left: 10px;
+    width: 250px;
 }
 
 body {

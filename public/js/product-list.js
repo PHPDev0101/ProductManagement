@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
 	const productTableBody = document.getElementById("productTableBody");
- 
+
 	const paginationControls = document.getElementById("paginationControls");
     let currentPage = 1;
 
@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(response => response.json())
             .then(data => {
                 productTableBody.innerHTML = "";
-                data.data.forEach(product => {
+                data.data.data.forEach(product => {
                     const row = document.createElement("tr");
                     row.innerHTML = `
                         <td>${product.name}</td>
@@ -28,16 +28,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function setupPagination(data) {
         paginationControls.innerHTML = "";
-        if (data.prev_page_url) {
+        if (data.data.prev_page_url) {
             const prevButton = document.createElement("button");
             prevButton.innerText = "Previous";
-            prevButton.addEventListener("click", () => fetchProducts(data.current_page - 1));
+            prevButton.addEventListener("click", () => fetchProducts(data.data.current_page - 1));
             paginationControls.appendChild(prevButton);
         }
-        if (data.next_page_url) {
+        if (data.data.next_page_url) {
             const nextButton = document.createElement("button");
             nextButton.innerText = "Next";
-            nextButton.addEventListener("click", () => fetchProducts(data.current_page + 1));
+            nextButton.addEventListener("click", () => fetchProducts(data.data.current_page + 1));
             paginationControls.appendChild(nextButton);
         }
     }
@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 .catch(error => console.error("Error deleting product:", error));
             }
         }
-    
+
 });
 
     fetchProducts();

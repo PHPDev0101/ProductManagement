@@ -14,9 +14,9 @@ document.addEventListener('DOMContentLoaded', async function() {
             const product = await response.json();
 
             if (response.ok) {
-                populateForm(product);
+                populateForm(product.data);
             } else {
-                console.error('Failed to fetch product:', product);
+                console.error('Failed to fetch product:', product.data);
                 alert('Error retrieving product details.');
             }
         } catch (error) {
@@ -53,7 +53,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 
             if (response.ok) {
                 alert('Product updated successfully!');
-                window.location.href = 'product-list.html'; // Redirect after update
             } else {
                 console.error('Update failed:', result);
                 alert('Failed to update product.');

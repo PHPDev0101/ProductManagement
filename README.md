@@ -62,7 +62,7 @@ Ensure you have the following installed:
 
 ### Frontend Setup
 1. Ensure your API is running (`php artisan serve`)
-2. Open `index.html` in a browser to start interacting with the application or *http://127.0.0.1:8000/index.html*  
+2. Access http://127.0.0.1:8000/index.html in a browser to start interacting with the application.
 
 ## API Routes
 
@@ -73,25 +73,3 @@ Ensure you have the following installed:
 | POST   | `/api/products`        | Create a new product   |
 | PUT    | `/api/products/{id}`   | Update a product       |
 | DELETE | `/api/products/{id}`   | Delete a product       |
-
-## Usage
-
-### Running the Web Interface
-1. Open `index.html` in a browser.
-2. Use the links to navigate between pages.
-3. View, create, edit, or delete products using the provided UI.
-
-### Testing API with Postman
-1. Open Postman.
-2. Set up a new request.
-3. Use the API endpoints above with the appropriate HTTP method.
-4. For `POST` and `PUT` requests, send a JSON payload with product data.
-
-Example payload:
-```json
-{
-  "name": "Product Name",
-  "description": "Product Description",
-  "price": 99.99
-}
-```
