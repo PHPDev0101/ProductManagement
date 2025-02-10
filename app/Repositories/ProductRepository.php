@@ -2,16 +2,19 @@
 
 namespace App\Repositories;
 
-use App\Exceptions\DatabaseException;
-use App\Models\Product;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\QueryException;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Database\QueryException;
+use App\Exceptions\DatabaseException;
 use Illuminate\Support\Facades\Log;
+use App\Models\Product;
 use PDOException;
+use Throwable;
 
 class ProductRepository
 {
+    private int $productsPerPage = 10;
+
     /**
      * @return LengthAwarePaginator
      *
@@ -20,11 +23,9 @@ class ProductRepository
     public function getAll(): LengthAwarePaginator
     {
         try {
-            return Product::paginate($per_page = 10);
+            return Product::paginate($this->productsPerPage);
         } catch (QueryException | PDOException $e) {
-            Log::error('Error retrieving all products: ' . $e->getMessage());
-            throw new DatabaseException('Currently service unavailable, please try again later', 500);
-            abort(500, 'Currently service unavailable');
+            $this->handleDatabaseException($e, 'Error retrieving all products');
         }
     }
 
@@ -40,8 +41,7 @@ class ProductRepository
         try {
             return Product::find($id);
         } catch (QueryException | PDOException $e) {
-            Log::error('Error retrieving product with ID: ' . $id . ': '. $e->getMessage());
-            throw new DatabaseException('Service unavailable. Please try again later.');
+            $this->handleDatabaseException($e, 'Error retrieving product with ID: ' . $id);
         }
     }
 
@@ -57,8 +57,7 @@ class ProductRepository
         try {
             return Product::create($data);
         } catch (QueryException | PDOException $e) {
-            Log::error('Error while creating product: ' . $e->getMessage());
-            throw new DatabaseException('Currently, the service is unavailable. Please try again later.');
+            $this->handleDatabaseException($e, 'Error while creating product');
         }
     }
 
@@ -77,13 +76,19 @@ class ProductRepository
             $product->update($data);
 
             return $product;
+        } catch (ModelNotFoundException $e) {
+            Log::info('Product with ID: ' . $id . ' not found'. $e->getMessage());
+            throw new ModelNotFoundException('Product not found');
         } catch (QueryException | PDOException $e) {
-            Log::error('Error updating product: ' . $e->getMessage());
-            throw new DatabaseException('Currently, the service is unavailable. Please try again later.');
+            $this->handleDatabaseException($e, 'Error updating product');
         }
     }
 
     /**
+     * @param int $id
+     *
+     * @return boolean
+     *
      * @throws DatabaseException
      */
     public function delete($id): bool
@@ -91,19 +96,30 @@ class ProductRepository
         try {
             $product = Product::findOrFail($id);
         } catch (ModelNotFoundException $e) {
-            Log::info("Product with ID $id not found.");
+            Log::info("Product with ID $id not found. " . $e->getMessage());
             throw new ModelNotFoundException('Product not found');
         } catch (QueryException | PDOException $e) {
-            Log::error("Database error while finding product: " . $e->getMessage());
-            throw new DatabaseException('Currently, the service is unavailable. Please try later.');
+            $this->handleDatabaseException($e, 'Error retrieving product with ID: ' . $id);
         }
 
         try {
             $product->delete();
             return true;
         } catch (QueryException | PDOException $e) {
-            Log::error("Error deleting product: " . $e->getMessage());
-            throw new DatabaseException('Currently, the service is unavailable. Please try later.');
+            $this->handleDatabaseException($e, 'Error deleting product');
         }
     }
+
+    /**
+     * @param throwable $e
+     * @param string $message
+     *
+     * @throws DatabaseException
+     */
+    private function handleDatabaseException(Throwable $e, string $message): void
+    {
+        Log::error($message . ': ' . $e->getMessage());
+        throw new DatabaseException('Service currently unavailable', 500);
+    }
+
 }

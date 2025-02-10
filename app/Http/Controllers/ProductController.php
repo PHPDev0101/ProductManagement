@@ -18,27 +18,59 @@ class ProductController extends Controller
         $this->productService = $productService;
     }
 
+    /**
+     * @return JsonResponse
+     *
+     * @throws DatabaseException
+     */
     public function index(): JsonResponse
     {
         return response()->json($this->productService->getAllProducts());
     }
 
-    public function show(string $id): JsonResponse
+    /**
+     * @param int $id
+     *
+     * @return JsonResponse
+     *
+     * @throws DatabaseException
+     */
+    public function show(int $id): JsonResponse
     {
-            return response()->json($this->productService->getProductById($id));
+        return response()->json($this->productService->getProductById($id));
     }
 
+    /**
+     * @param StoreProductRequest $request
+     *
+     * @return JsonResponse
+     *
+     * @throws DatabaseException
+     */
     public function store(StoreProductRequest $request): JsonResponse
     {
         return response()->json($this->productService->createProduct($request->validated()));
     }
 
+    /**
+     * @param UpdateProductRequest $request
+     * @param int $id
+     *
+     * @return JsonResponse
+     *
+     * @throws DatabaseException
+     */
     public function update(UpdateProductRequest $request, int $id): JsonResponse
     {
         return response()->json($this->productService->updateProduct($id, $request->validated()));
     }
 
-    public function destroy(string $id): JsonResponse
+    /**
+     * @param int $id
+     *
+     * @return JsonResponse
+     */
+    public function destroy(int $id): JsonResponse
     {
         try {
             $deleted = $this->productService->deleteProduct($id);

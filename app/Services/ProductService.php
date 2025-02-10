@@ -19,6 +19,8 @@ class ProductService
     }
 
     /**
+     * @return LengthAwarePaginator
+     *
      * @throws DatabaseException
      */
     public function getAllProducts(): LengthAwarePaginator
@@ -31,6 +33,10 @@ class ProductService
     }
 
     /**
+     * @param int $id
+     *
+     * @return Product
+     *
      * @throws DatabaseException
      */
     public function getProductById(int $id): Product
@@ -50,6 +56,10 @@ class ProductService
     }
 
     /**
+     * @param array $data
+     *
+     * @return Product
+     *
      * @throws DatabaseException
      */
     public function createProduct(array $data): Product
@@ -62,6 +72,11 @@ class ProductService
     }
 
     /**
+     * @param int $id
+     * @param array $data
+     *
+     * @return Product
+     *
      * @throws DatabaseException
      */
     public function updateProduct(int $id, array $data): Product
@@ -76,6 +91,10 @@ class ProductService
     }
 
     /**
+     * @param int $id
+     *
+     * @return boolean
+     *
      * @throws DatabaseException
      */
     public function deleteProduct(int $id): bool
