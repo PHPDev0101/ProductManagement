@@ -11,6 +11,8 @@ class Product extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     /**
      * @var array<string> $fillable
      */
@@ -19,5 +21,4 @@ class Product extends Model
         'description',
         'price',
     ];
-    public $timestamps = false;
 }

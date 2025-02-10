@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Log;
 
 class ProductService
 {
-    private int $productsPerPage = 10;
+    private const PRODUCT_PER_PAGE = 10;
 
     public function __construct(protected Product $product)
     {
@@ -20,7 +20,7 @@ class ProductService
     public function index(): LengthAwarePaginator
     {
         try {
-            return $this->product->paginate($this->productsPerPage);
+            return $this->product->paginate(self::PRODUCT_PER_PAGE);
         } catch (Exception $exception) {
             Log::error($exception);
 
