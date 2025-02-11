@@ -22,7 +22,7 @@ class ProductController extends Controller
 
         return response()->json([
             'status' => Response::HTTP_OK,
-            'message' => 'Products found successfully.',
+            'message' => 'Products retrieved successfully.',
             'data' => $product,
         ]);
     }
@@ -36,7 +36,6 @@ class ProductController extends Controller
             'message' => 'Product found successfully.',
             'data' => $product,
         ]);
-
     }
 
     public function store(StoreProductRequest $request): JsonResponse

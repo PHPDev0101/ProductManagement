@@ -18,7 +18,7 @@ class StoreProductRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'between:3,255',],
             'description' => ['nullable', 'string', 'max:65535',],
-            'price' => ['required', 'numeric', 'between:0,' . config('validation.max_price')],
+            'price' => ['required', 'numeric', 'between:0.01,' . config('validation.max_price')],
         ];
     }
 }

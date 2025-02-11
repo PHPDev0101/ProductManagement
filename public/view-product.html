@@ -9,23 +9,24 @@
 <body>
     <div class="container">
         <h1>View Product</h1>
+        <div id="alert-container"></div>
         <form id="view-product-form">
             <label for="name">Product Name</label>
-            <input type="text" id="name" name="name" required>
+            <input type="text" id="name" name="name">
 
             <label for="description">Description</label>
-            <textarea id="description" name="description" required></textarea>
+            <textarea id="description" name="description"></textarea>
 
             <label for="price">Price</label>
-            <input type="number" id="price" name="price" step="0.01" required>
+            <input type="number" id="price" name="price" step="0.01">
 
             <div class="button-container">
-                <button type="submit" id="update-button">Update Product</button>
-                <button type="button" id="delete-button">Delete Product</button>
+                <button class="btn-update" type="submit" id="update-button">Update Product</button>
+                <button class="btn-delete" type="button" id="delete-button">Delete Product</button>
             </div>
 
             <div class="back-button-container">
-                <a href="product-list.html" class="button-link">Back to List</a>
+                <a href="list-products.html" class="button-link">Back to List</a>
                 <a href="index.html" class="button-link">Back to Main</a>
             </div>
         </form>

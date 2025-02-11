@@ -1,86 +1,8 @@
-form {
-    display: flex;
-    flex-direction: column;
-    width: 300px;
-    margin: auto;
-    align-items: center;
-}
-
-label, input, textarea, button, .button-link {
-    margin-bottom: 10px;
-    width: 100%;
-    max-width: 300px;
-}
-
-input, textarea, button, .button-link {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-textarea {
-    height: 200px;
-    resize: vertical;
-}
-
-.button-container {
-    display: flex;
-	justify-content: space-between;
-    width: 100%;
-    max-width: 300px;
-	margin-top: 10px;
-}
-
-.button-container button, .button-link {
-    width: 48%;
-}
-
-.button-container a {
-    display: block;
-    text-align: center;
-    background-color: #007BFF;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    margin-top: 10px;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-}
-
-.button-link, button {
-    display: block;
-    text-align: center;
-    background-color: #007BFF;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    margin-top: 10px;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-}
-
-button {
-    border: none;
-    cursor: pointer;
-}
-
-.btn-delete {
-	max-width: 100px;
-}
-
-a.button-link, .btn-delete {
-	align-items: center;
-    margin-right: 10px;
-    margin-left: 10px;
-    width: 250px;
-}
-
+/* General Styles */
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
+    background-color: #f9f9f9;
 }
 
 .container {
@@ -88,10 +10,110 @@ body {
     margin: auto;
 }
 
+/* Forms */
+form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input, textarea, button {
+    margin-bottom: 15px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+}
+
+textarea {
+    height: 150px;
+    resize: vertical;
+}
+
+/* Buttons */
+.button-container, .back-button-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.button-link, button {
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
+	display: block;
+    text-align: center;
+    border-radius: 5px;
+	padding: 10px;
+    width: 48%;
+  	margin-bottom: 10px;
+	margin-right: 10px;
+	margin-top: 10px;
+}
+
+.top-buttons {
+	display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.btn {
+	padding: 8px 12px;
+    text-decoration: none;
+    color: white;
+    background-color: #007BFF;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+}
+
+button:hover, .button-link:hover, .btn:hover {
+    background-color: #0056b3;
+}
+
+.btn-delete {
+    background-color: #dc3545;
+	width: 48%
+}
+
+.btn-update {
+    background-color: #007BFF;
+	width: 48%
+}
+
+.btn-delete:hover {
+    background-color: #c82333;
+}
+
+.btn-update:hover {
+    background-color: #0056b3;
+}
+
+/* Tables */
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    background: #fff;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 th, td {
@@ -104,26 +126,23 @@ th {
     background-color: #f4f4f4;
 }
 
-.btn, .btn-delete {
-    padding: 8px 12px;
-    text-decoration: none;
-    color: white;
-    background-color: #007BFF;
+/* Alerts */
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
     border-radius: 5px;
-    border: none;
-    cursor: pointer;
-    display: inline-block;
+    font-weight: bold;
+    text-align: center;
 }
 
-.btn:hover, .button-link:hover, button:hover {
-    background-color: #0056b3;
+.alert-success {
+    background-color: #28a745;
+    color: white;
 }
 
-
-.top-buttons {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
+.alert-error {
+    background-color: #dc3545;
+    color: white;
 }
 
 .pagination {
