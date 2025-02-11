@@ -60,7 +60,7 @@ Ensure you have the following installed:
    php artisan serve
    ```
 
-### Frontend Setup
+### Access Guide
 1. Ensure your API is running (`php artisan serve`)
 2. Access http://127.0.0.1:8000/index.html in a browser to start interacting with the application.
 
