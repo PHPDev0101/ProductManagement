@@ -6,13 +6,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
-use App\Interfaces\ProductControllerInterface;
 use App\Interfaces\ProductServiceInterface;
-use App\Services\ProductControllerConstants;
+use App\Services\ProductServiceConstants;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-class ProductController extends Controller implements ProductControllerInterface
+class ProductController extends Controller
 {
     protected $productService;
     public function __construct(ProductServiceInterface $productService)
@@ -26,8 +25,8 @@ class ProductController extends Controller implements ProductControllerInterface
         $hasProducts = $products->isNotEmpty();
 
         $message = $hasProducts
-            ? ProductControllerConstants::MSG_PRODUCTS_RETRIEVED
-            : ProductControllerConstants::MSG_NO_PRODUCTS_AVAILABLE;
+            ? ProductServiceConstants::MSG_PRODUCTS_RETRIEVED
+            : ProductServiceConstants::MSG_NO_PRODUCTS_AVAILABLE;
 
         return response()->json([
             'status' => $hasProducts,
@@ -42,8 +41,8 @@ class ProductController extends Controller implements ProductControllerInterface
         $productExists = $product !== null;
 
         $message = $productExists
-            ? ProductControllerConstants::MSG_PRODUCT_FOUND
-            : ProductControllerConstants::MSG_PRODUCT_NOT_EXIST;
+            ? ProductServiceConstants::MSG_PRODUCT_FOUND
+            : ProductServiceConstants::MSG_PRODUCT_NOT_EXIST;
 
         $statusCode = $productExists
             ? Response::HTTP_OK
@@ -63,7 +62,7 @@ class ProductController extends Controller implements ProductControllerInterface
 
         return response()->json([
             'status' => true,
-            'message' => ProductControllerConstants::MSG_PRODUCT_STORED,
+            'message' => ProductServiceConstants::MSG_PRODUCT_STORED,
             'data' => $product,
         ], Response::HTTP_CREATED);
     }
@@ -75,7 +74,7 @@ class ProductController extends Controller implements ProductControllerInterface
 
         return response()->json([
             'status' => true,
-            'message' => ProductControllerConstants::MSG_PRODUCT_UPDATED,
+            'message' => ProductServiceConstants::MSG_PRODUCT_UPDATED,
             'data' => $product,
         ], Response::HTTP_OK);
     }
@@ -85,8 +84,8 @@ class ProductController extends Controller implements ProductControllerInterface
         $isDeleted = $this->productService->destroy($id);
 
         $message = $isDeleted
-            ? ProductControllerConstants::MSG_PRODUCT_DELETED
-            : ProductControllerConstants::MSG_PRODUCT_ALREADY_DELETED;
+            ? ProductServiceConstants::MSG_PRODUCT_DELETED
+            : ProductServiceConstants::MSG_PRODUCT_ALREADY_DELETED;
 
         $statusCode = $isDeleted
             ? Response::HTTP_OK

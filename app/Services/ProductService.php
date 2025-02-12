@@ -22,7 +22,7 @@ class ProductService implements ProductServiceInterface
     public function getPaginatedProducts(): LengthAwarePaginator
     {
         try {
-            return $this->product->paginate(ProductServiceConstants::PRODUCT_PER_PAGE);
+            return $this->product->paginate(ProductServiceConstants::PRODUCTS_PER_PAGE);
         } catch (Exception $exception) {
             Log::error($exception);
 
