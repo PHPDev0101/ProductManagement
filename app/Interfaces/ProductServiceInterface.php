@@ -3,7 +3,6 @@
 namespace App\Interfaces;
 
 use App\Models\Product;
-use App\Services\ProductServiceConstants;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 interface ProductServiceInterface

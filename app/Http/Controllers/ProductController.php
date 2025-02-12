@@ -13,10 +13,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ProductController extends Controller
 {
-    protected $productService;
-    public function __construct(ProductServiceInterface $productService)
+    public function __construct(protected ProductServiceInterface $productService)
     {
-        $this->productService = $productService;
     }
 
     public function index(): JsonResponse
@@ -29,7 +27,6 @@ class ProductController extends Controller
             : ProductServiceConstants::MSG_NO_PRODUCTS_AVAILABLE;
 
         return response()->json([
-            'status' => $hasProducts,
             'message' => $message,
             'data' => $products,
         ], Response::HTTP_OK);
@@ -38,21 +35,13 @@ class ProductController extends Controller
     public function show(int $id): JsonResponse
     {
         $product = $this->productService->show($id);
-        $productExists = $product !== null;
-
-        $message = $productExists
-            ? ProductServiceConstants::MSG_PRODUCT_FOUND
-            : ProductServiceConstants::MSG_PRODUCT_NOT_EXIST;
-
-        $statusCode = $productExists
-            ? Response::HTTP_OK
-            : Response::HTTP_NOT_FOUND;
 
         return response()->json([
-            'status' => $productExists,
-            'message' => $message,
+            'message' => $product
+                ? ProductServiceConstants::MSG_PRODUCT_FOUND
+                : ProductServiceConstants::MSG_PRODUCT_NOT_EXIST,
             'data' => $product,
-        ], $statusCode);
+        ], $product ? Response::HTTP_OK : Response::HTTP_NOT_FOUND);
     }
 
     public function store(StoreProductRequest $request): JsonResponse
@@ -61,7 +50,6 @@ class ProductController extends Controller
         $product = $this->productService->store($validatedData);
 
         return response()->json([
-            'status' => true,
             'message' => ProductServiceConstants::MSG_PRODUCT_STORED,
             'data' => $product,
         ], Response::HTTP_CREATED);
@@ -73,7 +61,6 @@ class ProductController extends Controller
         $product = $this->productService->update($id, $validatedData);
 
         return response()->json([
-            'status' => true,
             'message' => ProductServiceConstants::MSG_PRODUCT_UPDATED,
             'data' => $product,
         ], Response::HTTP_OK);
@@ -81,19 +68,11 @@ class ProductController extends Controller
 
     public function destroy(int $id): JsonResponse
     {
-        $isDeleted = $this->productService->destroy($id);
-
-        $message = $isDeleted
-            ? ProductServiceConstants::MSG_PRODUCT_DELETED
-            : ProductServiceConstants::MSG_PRODUCT_ALREADY_DELETED;
-
-        $statusCode = $isDeleted
-            ? Response::HTTP_OK
-            : Response::HTTP_NOT_FOUND;
-
-        return response()->json([
-            'status' => $isDeleted,
-            'message' => $message
-        ], $statusCode);
+        return response()->json(
+            null,
+            $this->productService->destroy($id)
+                ? Response::HTTP_NO_CONTENT
+                : Response::HTTP_NOT_FOUND
+        );
     }
 }

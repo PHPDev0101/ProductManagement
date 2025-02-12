@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             const response = await fetch(`http://127.0.0.1:8000/api/products/${productId}`);
             const product = await response.json();
 
-            if (response.ok && product.status === true) {
+            if (response.ok) {
                 populateForm(product.data);
             } else {
                 showAlert(product.message, "alert-error");
@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 			
 			const result = await response.json();
 			
-            if (response.ok && result.status === true) {
+            if (response.ok) {
                 showAlert(result.message, "alert-success");
             } else {
                 if (result.errors) {
@@ -79,14 +79,14 @@ document.addEventListener("DOMContentLoaded", async function () {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" }
             });
-			
-			const result = await response.json();
-			
-            if (response.ok && result.status === true) {
-                showAlert(result.message, "alert-success");
+
+            if (response.ok || response.status === 204) {
+                showAlert('Product deleted successfully.', "alert-success");
                 setTimeout(() => window.location.href = "list-products.html", 2000);
+            } else if (response.status === 404) {
+                showAlert('The product has already been deleted or does not exist.', "alert-error");
             } else {
-                showAlert(result.message, "alert-error");
+                showAlert('Failed to delete', "alert-error");
             }
         } catch (error) {
             showAlert("An error occurred while deleting the product.", "alert-error");

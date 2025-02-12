@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const result = await response.json();
 
-            if (response.ok && result.status === true) {
+            if (response.ok || response.status === 201) {
                 showAlert(result.message, "alert-success");
                 setTimeout(() => window.location.href = "list-products.html", 2000);
             } else {

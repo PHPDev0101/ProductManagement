@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const response = await fetch(`http://127.0.0.1:8000/api/products?page=${page}`);
             const data = await response.json();
 
-            if (data.status && data.data.data.length > 0) {
+            if (response.ok && data.data.data.length > 0) {
                 productTableBody.innerHTML = "";
                 data.data.data.forEach(product => {
                     const row = document.createElement("tr");
@@ -77,17 +77,18 @@ document.addEventListener("DOMContentLoaded", function () {
                         method: "DELETE",
                         headers: { "Content-Type": "application/json" }
                     });
-
-					const result = await response.json();
 					
-                    if (response.ok && result.status === true) {
-                        showAlert(result.message, "alert-success");
+                    if (response.ok || response.status === 204) {
+                        showAlert('Product deleted successfully.', "alert-success");
+                        event.target.closest("tr").remove();
+                        // setTimeout(() => location.reload(), 2000);
                         fetchProducts(currentPage);
+                    } else if (response.status === 404) {
+                        showAlert('The product has already been deleted or does not exist.', "alert-error");
                     } else {
-                        showAlert(result.message, "alert-error");
+                        showAlert('Failed to delete', "alert-error");
                     }
 
-                    location.reload();
                 } catch (error) {
                     showAlert("An error occurred while deleting the product.", "alert-error");
                 }
