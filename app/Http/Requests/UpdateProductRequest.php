@@ -24,14 +24,6 @@ class UpdateProductRequest extends FormRequest
         ];
     }
 
-    public function messages(): array
-    {
-        return [
-            'name' => 'The product name must be more that 3 letters long.',
-            'price.required' => 'The price is required and must be numeric.',
-        ];
-    }
-
     public function failedValidation(Validator $validator): void
     {
         throw new HttpResponseException(response()->json([

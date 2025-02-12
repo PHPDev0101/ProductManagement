@@ -24,14 +24,6 @@ class StoreProductRequest extends FormRequest
         ];
     }
 
-    public function messages(): array
-    {
-        return [
-            'name.required' => 'The product name is required.',
-            'price.required' => 'The price is required and must be numeric.',
-        ];
-    }
-
     public function failedValidation(Validator $validator): void
     {
         throw new HttpResponseException(response()->json([
