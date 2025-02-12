@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Interfaces\ProductServiceInterface;
 use App\Models\Product;
 use Exception;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
 
-class ProductService
+class ProductService implements ProductServiceInterface
 {
-    private const PRODUCT_PER_PAGE = 10;
-
     public function __construct(protected Product $product)
     {
     }
@@ -20,14 +19,14 @@ class ProductService
     /**
      * @throws Exception
      */
-    public function index(): LengthAwarePaginator
+    public function getPaginatedProducts(): LengthAwarePaginator
     {
         try {
-            return $this->product->paginate(self::PRODUCT_PER_PAGE);
+            return $this->product->paginate(ProductServiceConstants::PRODUCT_PER_PAGE);
         } catch (Exception $exception) {
             Log::error($exception);
 
-            throw new Exception('Products could not be found.');
+            throw new Exception(ProductServiceConstants::ERR_PRODUCTS_NOT_FOUND);
         }
     }
 
@@ -41,7 +40,7 @@ class ProductService
         } catch (Exception $exception) {
             Log::error($exception);
 
-            throw new Exception('Product could not be found.');
+            throw new Exception(ProductServiceConstants::ERR_PRODUCT_NOT_FOUND);
         }
     }
 
@@ -55,7 +54,7 @@ class ProductService
         } catch (Exception $exception) {
             Log::error($exception);
 
-            throw new Exception('Product could not be stored.');
+            throw new Exception(ProductServiceConstants::ERR_PRODUCT_NOT_STORED);
         }
     }
 
@@ -72,7 +71,7 @@ class ProductService
         } catch (Exception $exception) {
             Log::error($exception);
 
-            throw new Exception('Product could not be updated.');
+            throw new Exception(ProductServiceConstants::ERR_PRODUCT_NOT_UPDATED);
         }
     }
 
@@ -94,7 +93,7 @@ class ProductService
         } catch (Exception $exception) {
             Log::error($exception);
 
-            throw new Exception('Product could not be deleted.');
+            throw new Exception(ProductServiceConstants::ERR_PRODUCT_NOT_DELETED);
         }
     }
 }

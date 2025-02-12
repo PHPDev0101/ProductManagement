@@ -6,88 +6,95 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
-use App\Services\ProductService;
+use App\Interfaces\ProductControllerInterface;
+use App\Interfaces\ProductServiceInterface;
+use App\Services\ProductControllerConstants;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-class ProductController extends Controller
+class ProductController extends Controller implements ProductControllerInterface
 {
-    public function __construct(protected ProductService $productService)
+    protected $productService;
+    public function __construct(ProductServiceInterface $productService)
     {
+        $this->productService = $productService;
     }
 
     public function index(): JsonResponse
     {
-        $product = $this->productService->index();
+        $products = $this->productService->getPaginatedProducts();
+        $hasProducts = $products->isNotEmpty();
 
-        if ($product->isEmpty()) {
-            return response()->json([
-                'status' => false, // Response::HTTP_NO_CONTENT,
-                'message' => 'There are no products available at the moment.',
-                'data' => $product,
-            ], 200);
-        }
+        $message = $hasProducts
+            ? ProductControllerConstants::MSG_PRODUCTS_RETRIEVED
+            : ProductControllerConstants::MSG_NO_PRODUCTS_AVAILABLE;
 
         return response()->json([
-            'status' => true, // Response::HTTP_OK,
-            'message' => 'Products retrieved successfully.',
-            'data' => $product,
-        ], 200);
+            'status' => $hasProducts,
+            'message' => $message,
+            'data' => $products,
+        ], Response::HTTP_OK);
     }
 
     public function show(int $id): JsonResponse
     {
         $product = $this->productService->show($id);
+        $productExists = $product !== null;
 
-        if ($product === null) {
-            return response()->json([
-                'status' => false,
-                'message' => 'The requested product does not exist.',
-                'data' => $product,
-            ], 404);
-        }
+        $message = $productExists
+            ? ProductControllerConstants::MSG_PRODUCT_FOUND
+            : ProductControllerConstants::MSG_PRODUCT_NOT_EXIST;
+
+        $statusCode = $productExists
+            ? Response::HTTP_OK
+            : Response::HTTP_NOT_FOUND;
 
         return response()->json([
-            'status' => true, // Response::HTTP_OK,
-            'message' => 'Product found successfully.',
+            'status' => $productExists,
+            'message' => $message,
             'data' => $product,
-        ], 200);
+        ], $statusCode);
     }
 
     public function store(StoreProductRequest $request): JsonResponse
     {
-        $product = $this->productService->store($request->validated());
+        $validatedData = $request->validated();
+        $product = $this->productService->store($validatedData);
 
         return response()->json([
-            'status' => true, //Response::HTTP_CREATED,
-            'message' => 'Product stored successfully.',
+            'status' => true,
+            'message' => ProductControllerConstants::MSG_PRODUCT_STORED,
             'data' => $product,
-        ], 201);
+        ], Response::HTTP_CREATED);
     }
 
     public function update(UpdateProductRequest $request, int $id): JsonResponse
     {
-        $product = $this->productService->update($id, $request->validated());
+        $validatedData = $request->validated();
+        $product = $this->productService->update($id, $validatedData);
 
         return response()->json([
-            'status' => true, // Response::HTTP_OK,
-            'message' => 'Product updated successfully.',
+            'status' => true,
+            'message' => ProductControllerConstants::MSG_PRODUCT_UPDATED,
             'data' => $product,
-        ], 200);
+        ], Response::HTTP_OK);
     }
 
     public function destroy(int $id): JsonResponse
     {
-        if ($this->productService->destroy($id)) {
-            return response()->json([
-                'status' => true, //Response::HTTP_NO_CONTENT,
-                'message' => 'Product deleted successfully.',
-            ], 200);
-        }
+        $isDeleted = $this->productService->destroy($id);
+
+        $message = $isDeleted
+            ? ProductControllerConstants::MSG_PRODUCT_DELETED
+            : ProductControllerConstants::MSG_PRODUCT_ALREADY_DELETED;
+
+        $statusCode = $isDeleted
+            ? Response::HTTP_OK
+            : Response::HTTP_NOT_FOUND;
 
         return response()->json([
-            'status' => false, //Response::HTTP_NO_CONTENT,
-            'message' => 'The product has already been deleted or does not exist.',
-        ], 404);
+            'status' => $isDeleted,
+            'message' => $message
+        ], $statusCode);
     }
 }
