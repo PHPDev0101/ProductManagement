@@ -19,7 +19,7 @@ class UpdateProductRequest extends FormRequest
     {
         return [
             'name' => ['sometimes', 'string', 'between:3,255'],
-            'description' => ['sometimes', 'string', 'max:65535'],
+            'description' => ['nullable', 'string', 'max:65535'],
             'price' => ['sometimes', 'numeric', 'between:0.01,' . config('validation.max_price')],
         ];
     }
