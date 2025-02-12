@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     if (!productId) {
         showAlert("No product ID provided!", "alert-error");
-        setTimeout(() => window.location.href = "product-list.html", 2000);
+        setTimeout(() => window.location.href = "list-products.html", 2000);
         return;
     }
 
@@ -21,10 +21,11 @@ document.addEventListener("DOMContentLoaded", async function () {
             const response = await fetch(`http://127.0.0.1:8000/api/products/${productId}`);
             const product = await response.json();
 
-            if (response.ok) {
+            if (response.ok && product.status === true) {
                 populateForm(product.data);
             } else {
-                showAlert(product.message || "Error retrieving product details.", "alert-error");
+                showAlert(product.message, "alert-error");
+                setTimeout(() => window.location.href = "list-products.html", 2000);
             }
         } catch (error) {
             showAlert("An error occurred while fetching the product details.", "alert-error");
@@ -55,10 +56,15 @@ document.addEventListener("DOMContentLoaded", async function () {
 			
 			const result = await response.json();
 			
-            if (response.ok) {
-                showAlert(result.message || "Product updated successfully!", "alert-success");
+            if (response.ok && result.status === true) {
+                showAlert(result.message, "alert-success");
             } else {
-                showAlert(result.message || "Failed to update product.", "alert-error");
+                if (result.errors) {
+                    const value = Object.values(result.errors);
+                    showAlert(result.message + ': ' + value, "alert-error");
+                } else {
+                    showAlert(result.message, "alert-error");
+                }
             }
         } catch (error) {
             showAlert("An error occurred while updating the product.", "alert-error");
@@ -76,11 +82,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 			
 			const result = await response.json();
 			
-            if (response.ok) {
-                showAlert(result.message || "Product deleted successfully!", "alert-success");
+            if (response.ok && result.status === true) {
+                showAlert(result.message, "alert-success");
                 setTimeout(() => window.location.href = "list-products.html", 2000);
             } else {
-                showAlert(result.message || "Failed to delete product.", "alert-error");
+                showAlert(result.message, "alert-error");
             }
         } catch (error) {
             showAlert("An error occurred while deleting the product.", "alert-error");

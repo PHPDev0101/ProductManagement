@@ -16,10 +16,11 @@ document.addEventListener("DOMContentLoaded", function () {
             const response = await fetch(`http://127.0.0.1:8000/api/products?page=${page}`);
             const data = await response.json();
 
-            productTableBody.innerHTML = "";
-            data.data.data.forEach(product => {
-                const row = document.createElement("tr");
-                row.innerHTML = `
+            if (data.status && data.data.data.length > 0) {
+                productTableBody.innerHTML = "";
+                data.data.data.forEach(product => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
                     <td>${product.name}</td>
                     <td>${product.description}</td>
                     <td>${product.price}</td>
@@ -27,12 +28,28 @@ document.addEventListener("DOMContentLoaded", function () {
                         <a href="view-product.html?id=${product.id}" class="button-link">View</a>
                         <button class="btn-delete" data-id="${product.id}">Delete</button>
                     </td>`;
-                productTableBody.appendChild(row);
-            });
-            setupPagination(data);
+                    productTableBody.appendChild(row);
+                });
+                setupPagination(data);
+            } else {
+                showMessage(data.message);
+            }
+
         } catch (error) {
             showAlert("Error fetching products.", "alert-error");
         }
+    }
+
+    function showMessage(message) {
+        let messageElement = document.getElementById("message");
+
+        if (!messageElement) {
+            messageElement = document.createElement("div");
+            messageElement.id = "message";
+            document.body.appendChild(messageElement);
+        }
+
+        messageElement.innerText = message;
     }
 
     function setupPagination(data) {
@@ -63,12 +80,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
 					const result = await response.json();
 					
-                    if (response.ok) {
-                        showAlert(result.message || "Product deleted successfully!", "alert-success");
+                    if (response.ok && result.status === true) {
+                        showAlert(result.message, "alert-success");
                         fetchProducts(currentPage);
                     } else {
-                        showAlert(result.message || "Failed to delete product.", "alert-error");
+                        showAlert(result.message, "alert-error");
                     }
+
+                    location.reload();
                 } catch (error) {
                     showAlert("An error occurred while deleting the product.", "alert-error");
                 }

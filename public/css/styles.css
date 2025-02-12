@@ -1,4 +1,3 @@
-/* General Styles */
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
@@ -42,7 +41,6 @@ textarea {
     resize: vertical;
 }
 
-/* Buttons */
 .button-container, .back-button-container {
     display: flex;
     justify-content: space-between;
@@ -56,24 +54,24 @@ textarea {
     border: none;
     cursor: pointer;
     transition: background 0.3s;
-	display: block;
+    display: block;
     text-align: center;
     border-radius: 5px;
-	padding: 10px;
+    padding: 10px;
     width: 48%;
-  	margin-bottom: 10px;
-	margin-right: 10px;
-	margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
 }
 
 .top-buttons {
-	display: flex;
+    display: flex;
     justify-content: space-between;
     margin-bottom: 10px;
 }
 
 .btn {
-	padding: 8px 12px;
+    padding: 8px 12px;
     text-decoration: none;
     color: white;
     background-color: #007BFF;
@@ -89,12 +87,12 @@ button:hover, .button-link:hover, .btn:hover {
 
 .btn-delete {
     background-color: #dc3545;
-	width: 48%
+    width: 48%
 }
 
 .btn-update {
     background-color: #007BFF;
-	width: 48%
+    width: 48%
 }
 
 .btn-delete:hover {
@@ -105,7 +103,6 @@ button:hover, .button-link:hover, .btn:hover {
     background-color: #0056b3;
 }
 
-/* Tables */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -126,7 +123,6 @@ th {
     background-color: #f4f4f4;
 }
 
-/* Alerts */
 .alert {
     padding: 15px;
     margin-bottom: 20px;
@@ -168,4 +164,10 @@ th {
 .pagination button:disabled {
     background-color: #ccc;
     cursor: not-allowed;
+}
+
+#message {
+    text-align: center;
+    color: gray;
+    margin-top: 10px;
 }

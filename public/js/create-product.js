@@ -1,14 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     const createProductForm = document.getElementById("create-product-form");
 
-    function showAlert(message, type) {
-        const alertBox = document.createElement("div");
-        alertBox.className = `alert ${type}`;
-        alertBox.textContent = message;
-        document.body.prepend(alertBox);
-        setTimeout(() => alertBox.remove(), 3000);
-    }
-
     createProductForm.addEventListener("submit", async function (event) {
         event.preventDefault();
 
@@ -27,14 +19,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const result = await response.json();
 
-            if (response.ok) {
-                showAlert(result.message || "Product created successfully!", "alert-success");
+            if (response.ok && result.status === true) {
+                showAlert(result.message, "alert-success");
                 setTimeout(() => window.location.href = "list-products.html", 2000);
             } else {
-                showAlert(result.message || "Failed to create product.", "alert-error");
+                if (result.errors) {
+                    const value = Object.values(result.errors);
+                    showAlert(result.message + ': ' + value, "alert-error");
+                } else {
+                    showAlert(result.message, "alert-error");
+                }
             }
         } catch (error) {
             showAlert("An error occurred while creating the product.", "alert-error");
         }
     });
+
+    function showAlert(message, type) {
+        const alertBox = document.createElement("div");
+        alertBox.className = `alert ${type}`;
+        alertBox.textContent = message;
+        document.body.prepend(alertBox);
+        setTimeout(() => alertBox.remove(), 2000);
+    }
 });

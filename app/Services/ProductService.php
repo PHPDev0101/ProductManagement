@@ -17,6 +17,9 @@ class ProductService
     {
     }
 
+    /**
+     * @throws Exception
+     */
     public function index(): LengthAwarePaginator
     {
         try {
@@ -28,10 +31,13 @@ class ProductService
         }
     }
 
-    public function show(int $id): Product
+    /**
+     * @throws Exception
+     */
+    public function show(int $id): ?Product
     {
         try {
-            return $this->product->findOrFail($id);
+            return $this->product->find($id);
         } catch (Exception $exception) {
             Log::error($exception);
 
@@ -39,6 +45,9 @@ class ProductService
         }
     }
 
+    /**
+     * @throws Exception
+     */
     public function store(array $data): Product
     {
         try {
@@ -70,10 +79,18 @@ class ProductService
     /**
      * @throws Exception
      */
-    public function destroy(int $id): void
+    public function destroy(int $id): bool
     {
         try {
-            $this->product->findOrFail($id)->delete();
+            $product = $this->product->find($id);
+
+            if (!$product) {
+                return false;
+            }
+
+            $product->delete();
+
+            return true;
         } catch (Exception $exception) {
             Log::error($exception);
 
